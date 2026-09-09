@@ -5,6 +5,10 @@ import JobRow from '../../components/technician/JobRow'
 import JobCard from '../../components/technician/JobCard'
 import JobDetailsModal from '../../components/technician/JobDetailsModal'
 
+const isTodayJob = (job) => job.timeframe === 'today' || job.date === '2026-07-29'
+const isThisWeekJob = (job) =>
+  job.timeframe === 'today' || job.timeframe === 'this-week'
+
 /**
  * TechnicianAssignedJobs Page Component
  * Refined enterprise-grade Assigned Jobs dashboard.
@@ -19,17 +23,15 @@ function TechnicianAssignedJobs() {
   // Calculate dynamic tab counts based on dataset
   const tabCounts = useMemo(() => {
     return {
-      today: jobs.filter((j) => j.timeframe === 'today' || j.date === '2026-07-29').length,
-      thisWeek: jobs.filter(
-        (j) => j.timeframe === 'today' || j.timeframe === 'this-week' || j.date.startsWith('2026-07')
-      ).length,
+      today: jobs.filter(isTodayJob).length,
+      thisWeek: jobs.filter(isThisWeekJob).length,
       all: jobs.length,
     }
   }, [jobs])
 
   // Summary KPI counts for top strip
   const metrics = useMemo(() => {
-    const todayJobs = jobs.filter((j) => j.timeframe === 'today' || j.date === '2026-07-29')
+    const todayJobs = jobs.filter(isTodayJob)
     return {
       todayCount: todayJobs.length,
       inProgressCount: jobs.filter((j) => j.status === 'In Progress').length,
@@ -40,14 +42,14 @@ function TechnicianAssignedJobs() {
 
   // Filter jobs based on active tab, search query, and status dropdown
   const filteredJobs = useMemo(() => {
+    const normalizedQuery = searchQuery.trim().toLowerCase()
+
     return jobs.filter((job) => {
       // 1. Timeframe Tab filtering
       if (activeTab === 'today') {
-        const isToday = job.timeframe === 'today' || job.date === '2026-07-29'
-        if (!isToday) return false
+        if (!isTodayJob(job)) return false
       } else if (activeTab === 'this-week') {
-        const isThisWeek = job.timeframe === 'today' || job.timeframe === 'this-week'
-        if (!isThisWeek) return false
+        if (!isThisWeekJob(job)) return false
       }
 
       // 2. Status Dropdown filtering
@@ -55,14 +57,20 @@ function TechnicianAssignedJobs() {
         return false
       }
 
-      // 3. Search query filtering (by ID, Customer name, Service type, or Address)
-      if (searchQuery.trim() !== '') {
-        const q = searchQuery.toLowerCase()
-        const matchesId = job.id.toLowerCase().includes(q)
-        const matchesCustomer = job.customerName.toLowerCase().includes(q)
-        const matchesService = job.serviceType.toLowerCase().includes(q)
-        const matchesAddress = job.address.toLowerCase().includes(q)
-        return matchesId || matchesCustomer || matchesService || matchesAddress
+      // 3. Search query filtering (by ID, customer, service, equipment, or address)
+      if (normalizedQuery !== '') {
+        const matchesId = job.id.toLowerCase().includes(normalizedQuery)
+        const matchesCustomer = job.customerName.toLowerCase().includes(normalizedQuery)
+        const matchesService = job.serviceType.toLowerCase().includes(normalizedQuery)
+        const matchesEquipment = (job.unitType || '').toLowerCase().includes(normalizedQuery)
+        const matchesAddress = job.address.toLowerCase().includes(normalizedQuery)
+        return (
+          matchesId ||
+          matchesCustomer ||
+          matchesService ||
+          matchesEquipment ||
+          matchesAddress
+        )
       }
 
       return true
@@ -70,91 +78,85 @@ function TechnicianAssignedJobs() {
   }, [jobs, activeTab, statusFilter, searchQuery])
 
   return (
-    <div className="technician-page-content">
+    <div className="technician-page-content technician-assigned-jobs-page">
       {/* Page Title Header */}
-      <div className="page-header-container mb-4">
-        <div className="page-kicker">TECHNICIAN FIELD OPS</div>
-        <h2 className="page-title">Assigned Jobs</h2>
-        <p className="page-subtitle mb-0">
-          Review, track, and execute your scheduled air conditioning maintenance tasks.
-        </p>
-      </div>
+      <header className="assigned-jobs-header">
+        <div>
+          <div className="page-kicker">TECHNICIAN FIELD OPS</div>
+          <h2 className="page-title">Assigned Jobs</h2>
+          <p className="page-subtitle">
+            Review, track, and execute your scheduled air conditioning maintenance tasks.
+          </p>
+        </div>
+      </header>
 
       {/* KPI / Metric Summary Cards */}
-      <div className="row g-3 mb-4">
-        <div className="col-6 col-lg-3">
-          <div className="kpi-card-wrapper kpi-card-today">
-            <div className="kpi-icon-box kpi-icon-today">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
-                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
-                <line x1="16" y1="2" x2="16" y2="6"/>
-                <line x1="8" y1="2" x2="8" y2="6"/>
-                <line x1="3" y1="10" x2="21" y2="10"/>
-              </svg>
-            </div>
-            <div>
-              <div className="kpi-stat-value">{metrics.todayCount}</div>
-              <div className="kpi-stat-label">Today's Jobs</div>
-            </div>
+      <section className="assigned-jobs-summary" aria-label="Assigned jobs summary">
+        <div className="assigned-jobs-summary-item">
+          <div className="kpi-icon-box kpi-icon-today">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" aria-hidden="true">
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+              <line x1="16" y1="2" x2="16" y2="6" />
+              <line x1="8" y1="2" x2="8" y2="6" />
+              <line x1="3" y1="10" x2="21" y2="10" />
+            </svg>
+          </div>
+          <div className="assigned-jobs-summary-copy">
+            <div className="kpi-stat-label">Today's Jobs</div>
+            <div className="kpi-stat-value">{metrics.todayCount}</div>
           </div>
         </div>
 
-        <div className="col-6 col-lg-3">
-          <div className="kpi-card-wrapper kpi-card-progress">
-            <div className="kpi-icon-box kpi-icon-progress">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
-                <circle cx="12" cy="12" r="10"/>
-                <polyline points="12 6 12 12 14 14"/>
-              </svg>
-            </div>
-            <div>
-              <div className="kpi-stat-value">{metrics.inProgressCount}</div>
-              <div className="kpi-stat-label">In Progress</div>
-            </div>
+        <div className="assigned-jobs-summary-item">
+          <div className="kpi-icon-box kpi-icon-progress">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" aria-hidden="true">
+              <circle cx="12" cy="12" r="10" />
+              <polyline points="12 6 12 12 14 14" />
+            </svg>
+          </div>
+          <div className="assigned-jobs-summary-copy">
+            <div className="kpi-stat-label">In Progress</div>
+            <div className="kpi-stat-value">{metrics.inProgressCount}</div>
           </div>
         </div>
 
-        <div className="col-6 col-lg-3">
-          <div className="kpi-card-wrapper kpi-card-upcoming">
-            <div className="kpi-icon-box kpi-icon-upcoming">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
-                <polygon points="5 3 19 12 5 21 5 3"/>
-              </svg>
-            </div>
-            <div>
-              <div className="kpi-stat-value">{metrics.upcomingCount}</div>
-              <div className="kpi-stat-label">Upcoming</div>
-            </div>
+        <div className="assigned-jobs-summary-item">
+          <div className="kpi-icon-box kpi-icon-upcoming">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" aria-hidden="true">
+              <polygon points="5 3 19 12 5 21 5 3" />
+            </svg>
+          </div>
+          <div className="assigned-jobs-summary-copy">
+            <div className="kpi-stat-label">Upcoming</div>
+            <div className="kpi-stat-value">{metrics.upcomingCount}</div>
           </div>
         </div>
 
-        <div className="col-6 col-lg-3">
-          <div className="kpi-card-wrapper kpi-card-completed">
-            <div className="kpi-icon-box kpi-icon-completed">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
-                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
-                <polyline points="22 4 12 14.01 9 11.01"/>
-              </svg>
-            </div>
-            <div>
-              <div className="kpi-stat-value">{metrics.completedCount}</div>
-              <div className="kpi-stat-label">Completed</div>
-            </div>
+        <div className="assigned-jobs-summary-item">
+          <div className="kpi-icon-box kpi-icon-completed">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" aria-hidden="true">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+              <polyline points="22 4 12 14.01 9 11.01" />
+            </svg>
+          </div>
+          <div className="assigned-jobs-summary-copy">
+            <div className="kpi-stat-label">Completed</div>
+            <div className="kpi-stat-value">{metrics.completedCount}</div>
           </div>
         </div>
-      </div>
+      </section>
 
       {/* Main Jobs Card Section */}
       <div className="jobs-main-card">
         {/* Card Toolbar: Segmented Control on Left, Search & Filters on Right */}
-        <div className="jobs-toolbar d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3 p-3 p-md-4 border-bottom">
+        <div className="jobs-toolbar">
           <FilterTabs
             activeTab={activeTab}
             onTabChange={(tab) => setActiveTab(tab)}
             counts={tabCounts}
           />
 
-          <div className="d-flex flex-wrap align-items-center gap-2">
+          <div className="assigned-jobs-filter-controls">
             {/* Search Input with Clear Button */}
             <div className="search-input-wrapper">
               <svg
@@ -206,7 +208,7 @@ function TechnicianAssignedJobs() {
         </div>
 
         {/* Content View: Desktop Data Grid */}
-        <div className="d-none d-md-block">
+        <div className="assigned-jobs-table-view d-none d-md-block">
           <div className="table-responsive">
             <table className="table job-table mb-0">
               <thead>
@@ -262,7 +264,7 @@ function TechnicianAssignedJobs() {
         </div>
 
         {/* Content View: Mobile Responsive Cards */}
-        <div className="d-md-none p-3">
+        <div className="assigned-jobs-mobile-view d-md-none">
           {filteredJobs.length > 0 ? (
             filteredJobs.map((job) => (
               <JobCard
@@ -294,7 +296,7 @@ function TechnicianAssignedJobs() {
         </div>
 
         {/* Card Footer: Summary & Sync Status */}
-        <div className="jobs-card-footer d-flex align-items-center justify-content-between px-3 px-md-4 py-3 border-top bg-light-subtle">
+        <div className="jobs-card-footer">
           <span className="text-muted small">
             Showing <strong className="text-dark">{filteredJobs.length}</strong> of{' '}
             <strong className="text-dark">{jobs.length}</strong> total assigned jobs
