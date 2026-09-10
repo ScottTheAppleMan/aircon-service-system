@@ -1,7 +1,10 @@
 import React, { useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Modal from 'react-bootstrap/Modal'
-import { MOCK_JOBS } from './mockJobs'
+import {
+  selectAssignedJobViewModels,
+  selectCurrentTechnicianContext,
+} from './data/technicianSelectors'
 import JobStatusBadge from '../../components/technician/JobStatusBadge'
 import ServiceChecklist from '../../components/technician/ServiceChecklist'
 import PartsMaterialsTable from '../../components/technician/PartsMaterialsTable'
@@ -9,6 +12,10 @@ import PhotoEvidenceUpload from '../../components/technician/PhotoEvidenceUpload
 import FollowUpSection from '../../components/technician/FollowUpSection'
 
 const DRAFT_STORAGE_KEY = 'aircon-care-technician-report-draft'
+const CURRENT_TECHNICIAN = selectCurrentTechnicianContext()
+const SELECTABLE_JOBS = CURRENT_TECHNICIAN
+  ? selectAssignedJobViewModels(CURRENT_TECHNICIAN.technician_ID)
+  : []
 
 const currencyFormatter = new Intl.NumberFormat('en-SG', {
   style: 'currency',
@@ -118,7 +125,9 @@ function loadLocalDraft() {
     if (!isPlainObject(parsedDraft)) return initialReport
 
     const savedJobId = sanitizeString(parsedDraft.selectedJobId)
-    const selectedJobId = MOCK_JOBS.some((job) => job.id === savedJobId) ? savedJobId : ''
+    const selectedJobId = SELECTABLE_JOBS.some((job) => job.id === savedJobId)
+      ? savedJobId
+      : ''
     const savedCondition = sanitizeString(parsedDraft.overallCondition)
     const savedFollowUp = isPlainObject(parsedDraft.followUp) ? parsedDraft.followUp : {}
     const followUpRequired = savedFollowUp.required === 'yes' ? 'yes' : 'no'
@@ -175,7 +184,7 @@ function TechnicianSubmitReport() {
   const [showConfirmation, setShowConfirmation] = useState(false)
 
   const selectedJob = useMemo(
-    () => MOCK_JOBS.find((job) => job.id === report.selectedJobId) || null,
+    () => SELECTABLE_JOBS.find((job) => job.id === report.selectedJobId) || null,
     [report.selectedJobId],
   )
 
@@ -390,7 +399,7 @@ function TechnicianSubmitReport() {
               aria-describedby={errors.selectedJobId ? 'assigned-job-error' : undefined}
             >
               <option value="">Choose an assigned job</option>
-              {MOCK_JOBS.map((job) => (
+              {SELECTABLE_JOBS.map((job) => (
                 <option value={job.id} key={job.id}>
                   {job.id} · {job.customerName} · {job.serviceType} · {job.formattedDate}
                 </option>

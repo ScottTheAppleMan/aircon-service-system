@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react'
-import { MOCK_JOBS } from './mockJobs'
+import { selectCurrentTechnicianJobViewModels } from './data/technicianSelectors'
 import FilterTabs from '../../components/technician/FilterTabs'
 import JobRow from '../../components/technician/JobRow'
 import JobCard from '../../components/technician/JobCard'
@@ -14,7 +14,7 @@ const isThisWeekJob = (job) =>
  * Refined enterprise-grade Assigned Jobs dashboard.
  */
 function TechnicianAssignedJobs() {
-  const [jobs] = useState(MOCK_JOBS)
+  const [jobs] = useState(() => selectCurrentTechnicianJobViewModels())
   const [activeTab, setActiveTab] = useState('today')
   const [searchQuery, setSearchQuery] = useState('')
   const [statusFilter, setStatusFilter] = useState('ALL')

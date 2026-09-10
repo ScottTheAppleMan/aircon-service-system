@@ -1,6 +1,9 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { MOCK_JOBS } from './mockJobs'
+import {
+  selectAssignedJobViewModels,
+  selectCurrentTechnicianContext,
+} from './data/technicianSelectors'
 import JobStatusBadge from '../../components/technician/JobStatusBadge'
 import JobDetailsModal from '../../components/technician/JobDetailsModal'
 
@@ -10,9 +13,13 @@ import JobDetailsModal from '../../components/technician/JobDetailsModal'
  */
 function TechnicianDashboard() {
   const [selectedJob, setSelectedJob] = useState(null)
+  const technician = selectCurrentTechnicianContext()
+  const technicianJobs = technician
+    ? selectAssignedJobViewModels(technician.technician_ID)
+    : []
 
   // Filter today's jobs from mock dataset
-  const todayJobs = MOCK_JOBS.filter(
+  const todayJobs = technicianJobs.filter(
     (job) => job.timeframe === 'today' || job.date === '2026-07-29'
   )
 
@@ -21,7 +28,7 @@ function TechnicianDashboard() {
       <header className="dashboard-hero">
         <div className="dashboard-hero-copy">
           <div className="page-kicker">TECHNICIAN OPERATIONS</div>
-          <h2 className="page-title">Good morning, Marcus 👋</h2>
+          <h2 className="page-title">Good morning, {technician?.firstName || 'Marcus'} 👋</h2>
           <p className="page-subtitle">
             You have <strong>{todayJobs.length} jobs scheduled today</strong>
             <span className="dashboard-header-separator" aria-hidden="true" />
