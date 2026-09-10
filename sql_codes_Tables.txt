@@ -376,3 +376,52 @@ ADD CONSTRAINT fk_service_job FOREIGN KEY (serviceID) references payables.servic
 
 
 
+/// adding the new attributes to some tables;======================================================================================
+
+//user - phoneNumber, email, joined date
+alter table user3.topUser
+add phoneNumber VARCHAR(50);
+add email  VARCHAR(50);
+add joined Date;
+
+
+
+// customer - total bookings, total spent
+alter table user3.newCustomer
+add totalBookings int;
+add totalSpent float;
+
+/technician- specialty, jobs done
+alter table user3.technician
+add specialty VARCHAR(100);
+add jobsDone int;
+
+//inventory item - SKU, reorder ammmount , price, stock status
+alter table inventory.inventoryItem
+add SKU VARCHAR(100);
+add reorderAmount int;
+add price float;
+add stockStatus VARCHAR(100);
+
+
+//service - duration
+alter table payables.service
+add duration VARCHAR(100);
+
+
+//promotions - discount, used
+alter table payables.promotions
+add discount float;
+add used VARCHAR(100);
+
+//service report - findings, actons taken, ac condition, recommendations, notes, service checklist, completed date time
+alter table new_jobBooking.serviceReport
+add findings VARCHAR(200);
+add actionsTaken VARCHAR(200);
+add AC_condition VARCHAR(200);
+add recommendations VARCHAR(200);
+add notes VARCHAR(200);
+add serviceChecklist VARCHAR(200);
+add comepletedDateTime VARCHAR(100);
+
+
