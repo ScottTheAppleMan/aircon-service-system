@@ -174,7 +174,57 @@ export const JOB_HISTORY = freezeCollection(
 
 export const SERVICE_REPORTS = freezeCollection([])
 export const PARTS_USED = freezeCollection([])
-export const INVENTORY_ITEMS = freezeCollection([])
+// Frontend compatibility inventory only. These IDs are not backend primary keys.
+export const INVENTORY_ITEMS = freezeCollection([
+  {
+    itemID: 4_000_001,
+    itemType: 'Consumable',
+    itemName: 'Air Filter',
+    stock: 42,
+    description: 'Replacement filter media for compatible indoor fan-coil units.',
+    isDeleted: false,
+  },
+  {
+    itemID: 4_000_002,
+    itemType: 'Refrigerant',
+    itemName: 'R32 Refrigerant',
+    stock: 18,
+    description: 'Refrigerant stock for compatible R32 air-conditioning systems.',
+    isDeleted: false,
+  },
+  {
+    itemID: 4_000_003,
+    itemType: 'Refrigerant',
+    itemName: 'R410A Refrigerant',
+    stock: 14,
+    description: 'Refrigerant stock for compatible R410A air-conditioning systems.',
+    isDeleted: false,
+  },
+  {
+    itemID: 4_000_004,
+    itemType: 'Aircon Part',
+    itemName: 'PVC Drain Hose',
+    stock: 24,
+    description: 'Replacement condensate drainage hose for indoor units.',
+    isDeleted: false,
+  },
+  {
+    itemID: 4_000_005,
+    itemType: 'Consumable',
+    itemName: 'Insulation Tape',
+    stock: 37,
+    description: 'Insulation finishing tape for refrigerant piping and service work.',
+    isDeleted: false,
+  },
+  {
+    itemID: 4_000_006,
+    itemType: 'Aircon Part',
+    itemName: 'Condensate Drain Pump',
+    stock: 6,
+    description: 'Replacement pump for condensate drainage installations.',
+    isDeleted: false,
+  },
+])
 export const TOOLS = freezeCollection([])
 export const DISPOSABLE_TOOLS = freezeCollection([])
 export const AIRCON_PARTS = freezeCollection([])

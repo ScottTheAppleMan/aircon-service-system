@@ -130,6 +130,10 @@ export function selectAssignedJobs(entityState, technician_ID) {
     .filter(Boolean)
 }
 
+export function selectInventoryItems(entityState) {
+  return getCollection(entityState, 'inventoryItems').filter((item) => !item.isDeleted)
+}
+
 export function selectCurrentTechnicianContext(user_ID = CURRENT_TECHNICIAN_USER_ID) {
   return selectTechnicianContext(TECHNICIAN_MOCK_ENTITY_STATE, user_ID)
 }
@@ -138,6 +142,10 @@ export function selectAssignedJobViewModels(
   technician_ID = CURRENT_TECHNICIAN_ENTITY_ID,
 ) {
   return selectAssignedJobs(TECHNICIAN_MOCK_ENTITY_STATE, technician_ID)
+}
+
+export function selectCurrentInventoryItems() {
+  return selectInventoryItems(TECHNICIAN_MOCK_ENTITY_STATE)
 }
 
 export function selectCurrentTechnicianJobViewModels() {

@@ -3,12 +3,12 @@ import { useNavigate } from 'react-router-dom'
 import Modal from 'react-bootstrap/Modal'
 import {
   selectAssignedJobViewModels,
+  selectCurrentInventoryItems,
   selectCurrentTechnicianContext,
 } from './data/technicianSelectors'
 import JobStatusBadge from '../../components/technician/JobStatusBadge'
 import ServiceChecklist from '../../components/technician/ServiceChecklist'
 import PartsMaterialsTable from '../../components/technician/PartsMaterialsTable'
-import PhotoEvidenceUpload from '../../components/technician/PhotoEvidenceUpload'
 import FollowUpSection from '../../components/technician/FollowUpSection'
 
 const DRAFT_STORAGE_KEY = 'aircon-care-technician-report-draft'
@@ -16,6 +16,13 @@ const CURRENT_TECHNICIAN = selectCurrentTechnicianContext()
 const SELECTABLE_JOBS = CURRENT_TECHNICIAN
   ? selectAssignedJobViewModels(CURRENT_TECHNICIAN.technician_ID)
   : []
+const AVAILABLE_INVENTORY_ITEMS = selectCurrentInventoryItems()
+const INVENTORY_ITEM_BY_ID = new Map(
+  AVAILABLE_INVENTORY_ITEMS.map((item) => [item.itemID, item]),
+)
+const INVENTORY_ITEM_ID_BY_NAME = new Map(
+  AVAILABLE_INVENTORY_ITEMS.map((item) => [item.itemName.trim().toLowerCase(), item.itemID]),
+)
 
 const currencyFormatter = new Intl.NumberFormat('en-SG', {
   style: 'currency',
@@ -55,6 +62,20 @@ function sanitizeChecklist(value) {
   )
 }
 
+function sanitizeInventoryItemId(value, legacyItemName) {
+  const normalizedValue =
+    typeof value === 'number' && Number.isInteger(value)
+      ? value
+      : typeof value === 'string' && /^\d+$/.test(value.trim())
+        ? Number(value.trim())
+        : null
+
+  if (INVENTORY_ITEM_BY_ID.has(normalizedValue)) return normalizedValue
+
+  const normalizedLegacyName = sanitizeString(legacyItemName).trim().toLowerCase()
+  return INVENTORY_ITEM_ID_BY_NAME.get(normalizedLegacyName) ?? ''
+}
+
 function sanitizeMaterials(value) {
   if (!Array.isArray(value)) return []
 
@@ -75,7 +96,8 @@ function sanitizeMaterials(value) {
 
     return {
       id,
-      itemName: sanitizeString(row.itemName),
+      itemID: sanitizeInventoryItemId(row.itemID, row.itemName),
+      // Pending schema confirmation: quantity and cost remain form-only values.
       quantity: sanitizeNumericInput(row.quantity),
       unitCost: sanitizeNumericInput(row.unitCost),
     }
@@ -98,8 +120,6 @@ function createInitialReport() {
     internalNotes: '',
     checklist: {},
     materials: [],
-    beforePhoto: null,
-    afterPhoto: null,
     followUp: {
       required: 'no',
       reason: '',
@@ -108,7 +128,6 @@ function createInitialReport() {
     },
     completionDateTime: getLocalDateTimeValue(),
     customerAcknowledged: false,
-    customerRemarks: '',
   }
 }
 
@@ -155,9 +174,6 @@ function loadLocalDraft() {
         ? savedCompletionDateTime
         : initialReport.completionDateTime,
       customerAcknowledged: parsedDraft.customerAcknowledged === true,
-      customerRemarks: sanitizeString(parsedDraft.customerRemarks),
-      beforePhoto: null,
-      afterPhoto: null,
     }
   } catch {
     return initialReport
@@ -247,8 +263,8 @@ function TechnicianSubmitReport() {
       const quantity = Number(row.quantity)
       const unitCost = Number(row.unitCost)
 
-      if (!row.itemName.trim()) {
-        rowErrors.itemName = 'Enter an item name.'
+      if (!INVENTORY_ITEM_BY_ID.has(row.itemID)) {
+        rowErrors.itemID = 'Select an inventory item.'
       }
 
       if (
@@ -309,17 +325,10 @@ function TechnicianSubmitReport() {
 
   const handleSaveDraft = () => {
     try {
-      const draft = {
-        ...report,
-        beforePhoto: undefined,
-        afterPhoto: undefined,
-      }
-
-      window.localStorage.setItem(DRAFT_STORAGE_KEY, JSON.stringify(draft))
+      window.localStorage.setItem(DRAFT_STORAGE_KEY, JSON.stringify(report))
       setNotice({
         type: 'info',
-        message:
-          'Draft saved in this browser only. Photo previews remain available for this session but are not stored.',
+        message: 'Draft saved in this browser only.',
       })
     } catch {
       setNotice({
@@ -563,15 +572,9 @@ function TechnicianSubmitReport() {
 
         <PartsMaterialsTable
           rows={report.materials}
+          inventoryItems={AVAILABLE_INVENTORY_ITEMS}
           errors={errors.materials}
           onChange={updateMaterials}
-        />
-
-        <PhotoEvidenceUpload
-          beforePhoto={report.beforePhoto}
-          afterPhoto={report.afterPhoto}
-          onBeforeChange={(file) => updateReportField('beforePhoto', file)}
-          onAfterChange={(file) => updateReportField('afterPhoto', file)}
         />
 
         <FollowUpSection
@@ -616,20 +619,6 @@ function TechnicianSubmitReport() {
                   <small>The customer has reviewed the completed work and report summary.</small>
                 </span>
               </label>
-            </div>
-
-            <div className="report-field report-field-full">
-              <label className="report-label" htmlFor="customer-remarks">
-                Customer Remarks <span className="report-optional-label">(optional)</span>
-              </label>
-              <textarea
-                id="customer-remarks"
-                className="report-control"
-                rows="3"
-                value={report.customerRemarks}
-                placeholder="Record any comments or concerns shared by the customer."
-                onChange={(event) => updateReportField('customerRemarks', event.target.value)}
-              />
             </div>
           </div>
         </section>

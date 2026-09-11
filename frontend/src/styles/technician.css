@@ -1840,6 +1840,26 @@ textarea.report-control {
   min-width: 0;
 }
 
+.technician-submit-report-page .materials-inventory-details {
+  display: grid;
+  gap: 0.2rem;
+  margin-top: 0.45rem;
+  color: var(--text-muted);
+}
+
+.technician-submit-report-page .materials-inventory-details > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.85rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+.technician-submit-report-page .materials-inventory-details small {
+  font-size: 0.72rem;
+  line-height: 1.45;
+}
+
 .materials-field-label {
   display: none;
 }
@@ -1902,113 +1922,6 @@ textarea.report-control {
   color: var(--text-muted);
   font-size: 0.82rem;
   line-height: 1.5;
-}
-
-/* Photo Evidence */
-.photo-evidence-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1.25rem;
-}
-
-.photo-evidence-field {
-  min-width: 0;
-}
-
-.photo-evidence-copy {
-  min-height: 58px;
-}
-
-.photo-evidence-copy .report-label {
-  margin-bottom: 0.15rem;
-}
-
-.photo-evidence-copy > span {
-  display: block;
-  color: var(--text-muted);
-  font-size: 0.76rem;
-  line-height: 1.45;
-}
-
-.photo-file-input {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  clip: rect(0 0 0 0);
-  clip-path: inset(50%);
-  white-space: nowrap;
-}
-
-.photo-upload-dropzone {
-  display: flex;
-  min-height: 160px;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  gap: 0.35rem;
-  border: 1px dashed var(--border-strong);
-  border-radius: 8px;
-  background-color: var(--surface-muted);
-  color: var(--primary-600);
-  cursor: pointer;
-  transition: border-color 0.15s ease, background-color 0.15s ease;
-}
-
-.photo-upload-dropzone:hover,
-.photo-upload-dropzone:focus-within {
-  border-color: var(--primary-500);
-  background-color: var(--primary-50);
-}
-
-.photo-upload-dropzone > span {
-  font-size: 0.84rem;
-  font-weight: 600;
-}
-
-.photo-upload-dropzone small {
-  color: var(--text-muted);
-  font-size: 0.72rem;
-}
-
-.photo-preview {
-  overflow: hidden;
-  border: 1px solid var(--border-subtle);
-  border-radius: 8px;
-  background-color: var(--surface-muted);
-}
-
-.photo-preview img {
-  display: block;
-  width: 100%;
-  height: 160px;
-  object-fit: cover;
-}
-
-.photo-preview-footer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  padding: 0.6rem 0.75rem;
-}
-
-.photo-preview-footer span {
-  overflow: hidden;
-  color: var(--text-secondary);
-  font-size: 0.76rem;
-  font-weight: 500;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.photo-preview-footer button {
-  padding: 0;
-  border: 0;
-  background: transparent;
-  color: var(--primary-700);
-  font-size: 0.76rem;
-  font-weight: 600;
 }
 
 /* Follow-Up & Completion */
@@ -2161,7 +2074,6 @@ textarea.report-control {
   .report-fields-grid,
   .selected-job-details,
   .service-checklist-grid,
-  .photo-evidence-grid,
   .follow-up-fields {
     grid-template-columns: 1fr;
   }
@@ -2236,12 +2148,6 @@ textarea.report-control {
 
   .service-checklist-grid {
     gap: 0;
-  }
-
-  .photo-upload-dropzone,
-  .photo-preview img {
-    min-height: 135px;
-    height: 135px;
   }
 
   .report-form-actions {

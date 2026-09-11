@@ -13,7 +13,8 @@ function createMaterialRow() {
 
   return {
     id: uniqueId,
-    itemName: '',
+    itemID: '',
+    // Pending schema confirmation: quantity and cost are presentation-only fields.
     quantity: '1',
     unitCost: '0.00',
   }
@@ -29,7 +30,11 @@ function calculateRowTotal(row) {
   return quantity * unitCost
 }
 
-function PartsMaterialsTable({ rows, errors = {}, onChange }) {
+function PartsMaterialsTable({ rows, inventoryItems = [], errors = {}, onChange }) {
+  const inventoryById = useMemo(
+    () => new Map(inventoryItems.map((item) => [item.itemID, item])),
+    [inventoryItems],
+  )
   const materialsTotal = useMemo(
     () => rows.reduce((total, row) => total + calculateRowTotal(row), 0),
     [rows],
@@ -54,7 +59,7 @@ function PartsMaterialsTable({ rows, errors = {}, onChange }) {
       <div className="report-section-heading report-section-heading-with-action">
         <div>
           <h3 id="parts-materials-title">Parts &amp; Materials Used</h3>
-          <p>Record only items consumed during this service visit.</p>
+          <p>Select inventory items consumed during this service visit.</p>
         </div>
         <button type="button" className="btn btn-outline-primary btn-sm" onClick={addRow}>
           <span aria-hidden="true">+</span> Add Row
@@ -64,7 +69,7 @@ function PartsMaterialsTable({ rows, errors = {}, onChange }) {
       {rows.length > 0 ? (
         <div className="materials-list">
           <div className="materials-grid materials-grid-header" aria-hidden="true">
-            <span>Item name</span>
+            <span>Inventory item</span>
             <span>Quantity</span>
             <span>Unit cost (SGD)</span>
             <span>Row total</span>
@@ -73,6 +78,7 @@ function PartsMaterialsTable({ rows, errors = {}, onChange }) {
 
           {rows.map((row, index) => {
             const rowErrors = errors[row.id] || {}
+            const selectedInventoryItem = inventoryById.get(row.itemID)
             const itemErrorId = `material-${row.id}-item-error`
             const quantityErrorId = `material-${row.id}-quantity-error`
             const costErrorId = `material-${row.id}-cost-error`
@@ -81,22 +87,42 @@ function PartsMaterialsTable({ rows, errors = {}, onChange }) {
               <div className="materials-grid materials-grid-row" key={row.id}>
                 <div className="materials-field materials-item-field">
                   <label htmlFor={`material-${row.id}-item`} className="materials-field-label">
-                    Item name
+                    Inventory item
                   </label>
-                  <input
+                  <select
                     id={`material-${row.id}-item`}
-                    type="text"
                     className="report-control"
-                    value={row.itemName}
-                    placeholder={index === 0 ? 'e.g. Air filter' : 'Item name'}
-                    onChange={(event) => updateRow(row.id, 'itemName', event.target.value)}
+                    value={row.itemID}
+                    onChange={(event) =>
+                      updateRow(
+                        row.id,
+                        'itemID',
+                        event.target.value === '' ? '' : Number(event.target.value),
+                      )
+                    }
                     aria-required="true"
-                    aria-invalid={Boolean(rowErrors.itemName)}
-                    aria-describedby={rowErrors.itemName ? itemErrorId : undefined}
-                  />
-                  {rowErrors.itemName && (
+                    aria-invalid={Boolean(rowErrors.itemID)}
+                    aria-describedby={rowErrors.itemID ? itemErrorId : undefined}
+                  >
+                    <option value="">Choose an inventory item</option>
+                    {inventoryItems.map((item) => (
+                      <option value={item.itemID} key={item.itemID}>
+                        {item.itemName} · {item.itemType}
+                      </option>
+                    ))}
+                  </select>
+                  {selectedInventoryItem && (
+                    <div className="materials-inventory-details">
+                      <div>
+                        <span>{selectedInventoryItem.itemType}</span>
+                        <span>Stock: {selectedInventoryItem.stock}</span>
+                      </div>
+                      <small>{selectedInventoryItem.description}</small>
+                    </div>
+                  )}
+                  {rowErrors.itemID && (
                     <span className="report-field-error" id={itemErrorId}>
-                      {rowErrors.itemName}
+                      {rowErrors.itemID}
                     </span>
                   )}
                 </div>
