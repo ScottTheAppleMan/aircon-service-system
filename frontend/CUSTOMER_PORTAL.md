@@ -75,7 +75,7 @@ the moment the backend reads it.
 All of it lives in `src/constants/loyalty.js`, so changing the rules is one
 file.
 
-**Earning.** 1 point per RM 1 spent, credited when a booking reaches
+**Earning.** 1 point per S$1 spent, credited when a booking reaches
 `Completed`.
 
 Points are deliberately *not* awarded at booking time. Doing that would let
@@ -85,10 +85,10 @@ someone book and cancel repeatedly to farm points.
 
 | Points | Reward | Value per point |
 | ------ | ------ | --------------- |
-| 100    | RM 5   | 0.050 |
-| 250    | RM 15  | 0.060 |
-| 500    | RM 35  | 0.070 |
-| 1000   | RM 80  | 0.080 |
+| 100    | S$5    | 0.050 |
+| 250    | S$15   | 0.060 |
+| 500    | S$35   | 0.070 |
+| 1000   | S$80   | 0.080 |
 
 The rate climbs, so saving up is worth more than cashing out early. That is the
 part worth explaining when the scheme is presented — it is a deliberate choice,

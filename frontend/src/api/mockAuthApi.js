@@ -20,7 +20,7 @@ const MOCK_USERS = [
     password: 'password123',
     accountType: ACCOUNT_TYPES.CUSTOMER,
     customer_name: 'Sarah Tan',
-    customer_address: '12 Jalan Melati, Kuala Lumpur',
+    customer_address: 'Blk 512 Ang Mo Kio Ave 8, #07-142, Singapore 560512',
   },
   {
     user_ID: 2,

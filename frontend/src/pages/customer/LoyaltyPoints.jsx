@@ -80,7 +80,7 @@ export default function LoyaltyPoints() {
       <header className="page-head">
         <h1 className="page-head__title">Loyalty points</h1>
         <p className="page-head__subtitle">
-          Earn {POINTS_PER_CURRENCY_UNIT} point for every {CURRENCY} 1 spent on a completed
+          Earn {POINTS_PER_CURRENCY_UNIT} point for every {CURRENCY}1 spent on a completed
           service.
         </p>
       </header>
@@ -127,7 +127,7 @@ export default function LoyaltyPoints() {
                 <p className="tier__points">{tier.points} pts</p>
                 <p className="tier__reward">{formatMoney(tier.discount)} off</p>
                 <p className="tier__rate">
-                  {(tier.discount / tier.points).toFixed(3)} {CURRENCY} per point
+                  {CURRENCY}{(tier.discount / tier.points).toFixed(3)} per point
                 </p>
 
                 <button
