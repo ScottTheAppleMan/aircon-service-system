@@ -1,0 +1,491 @@
+/* Shared styling for the signed-in portals. Bootstrap loads first; this only
+   adds what it does not cover. */
+
+.portal {
+  display: grid;
+  grid-template-columns: 13.5rem 1fr;
+  min-height: calc(100vh - 3.25rem);
+  background: #f4f7fa;
+}
+
+.portal-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  padding: 1rem 0.75rem;
+  background: #fff;
+  border-right: 1px solid #e3e9f0;
+}
+
+.portal-nav__link {
+  padding: 0.55rem 0.75rem;
+  border-radius: 0.5rem;
+  color: #445067;
+  font-size: 0.9rem;
+  text-decoration: none;
+}
+
+.portal-nav__link:hover {
+  background: #f1f5f9;
+  color: #14243a;
+}
+
+.portal-nav__link--active {
+  background: #e7f0ff;
+  color: #0d6efd;
+  font-weight: 600;
+}
+
+.portal-nav__points {
+  margin-top: auto;
+  padding: 0.75rem;
+  background: #f4f8ff;
+  border: 1px solid #d9e6ff;
+  border-radius: 0.6rem;
+  text-align: center;
+}
+
+.portal-nav__points-value {
+  display: block;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #0d6efd;
+  line-height: 1.1;
+}
+
+.portal-nav__points-label {
+  font-size: 0.75rem;
+  color: #5d6b80;
+}
+
+.portal-main {
+  padding: 1.5rem;
+  max-width: 60rem;
+}
+
+.page-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.page-head__title {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #14243a;
+}
+
+.page-head__subtitle {
+  margin: 0.15rem 0 0;
+  font-size: 0.9rem;
+  color: #5d6b80;
+}
+
+.panel {
+  padding: 1.25rem;
+  margin-bottom: 1.25rem;
+  background: #fff;
+  border: 1px solid #e3e9f0;
+  border-radius: 0.75rem;
+}
+
+.panel--flush {
+  padding: 0;
+  overflow: hidden;
+}
+
+.panel__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.panel__title {
+  margin: 0 0 0.75rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #14243a;
+}
+
+.panel__head .panel__title {
+  margin-bottom: 0;
+}
+
+/* Dashboard stat tiles */
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.stat-card {
+  padding: 1rem;
+  background: #fff;
+  border: 1px solid #e3e9f0;
+  border-radius: 0.75rem;
+}
+
+.stat-card__label {
+  margin: 0;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #5d6b80;
+}
+
+.stat-card__value {
+  margin: 0.25rem 0 0;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #14243a;
+  line-height: 1.1;
+}
+
+.stat-card__hint {
+  margin: 0.25rem 0 0;
+  font-size: 0.8rem;
+}
+
+.next-visit {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.next-visit__service {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #14243a;
+}
+
+.next-visit__when,
+.next-visit__where,
+.next-visit__tech {
+  margin: 0.2rem 0 0;
+  font-size: 0.875rem;
+  color: #5d6b80;
+}
+
+/* Service picker on the booking form */
+.service-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+  gap: 0.75rem;
+}
+
+.service-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding: 0.9rem;
+  background: #fff;
+  border: 1px solid #dfe6ee;
+  border-radius: 0.6rem;
+  text-align: left;
+  cursor: pointer;
+}
+
+.service-card:hover:not(:disabled) {
+  border-color: #0d6efd;
+}
+
+.service-card--selected {
+  border-color: #0d6efd;
+  box-shadow: 0 0 0 2px rgba(13, 110, 253, 0.15);
+  background: #f6faff;
+}
+
+.service-card__name {
+  font-weight: 600;
+  color: #14243a;
+}
+
+.service-card__price {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #0d6efd;
+}
+
+.service-card__description {
+  font-size: 0.8rem;
+  color: #5d6b80;
+}
+
+/* Time slots */
+.slot-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(6.5rem, 1fr));
+  gap: 0.5rem;
+}
+
+.slot {
+  padding: 0.5rem;
+  background: #fff;
+  border: 1px solid #dfe6ee;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+.slot:hover:not(:disabled) {
+  border-color: #0d6efd;
+}
+
+.slot--selected {
+  background: #0d6efd;
+  border-color: #0d6efd;
+  color: #fff;
+  font-weight: 600;
+}
+
+.booking-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.25rem;
+  background: #fff;
+  border: 1px solid #e3e9f0;
+  border-radius: 0.75rem;
+}
+
+.booking-summary__label {
+  margin: 0;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #5d6b80;
+}
+
+.booking-summary__value {
+  margin: 0.1rem 0 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #14243a;
+}
+
+.booking-summary__note {
+  margin: 0.1rem 0 0;
+  font-size: 0.78rem;
+  color: #5d6b80;
+}
+
+/* Filter tabs on My bookings */
+.filter-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 1rem;
+}
+
+.filter-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.8rem;
+  background: #fff;
+  border: 1px solid #dfe6ee;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  color: #445067;
+  cursor: pointer;
+}
+
+.filter-tab--active {
+  background: #0d6efd;
+  border-color: #0d6efd;
+  color: #fff;
+  font-weight: 600;
+}
+
+.filter-tab__count {
+  padding: 0 0.4rem;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.08);
+  font-size: 0.75rem;
+}
+
+.filter-tab--active .filter-tab__count {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* Loyalty */
+.points-hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.5rem;
+  margin-bottom: 1.25rem;
+  background: linear-gradient(135deg, #0d6efd, #4f9bff);
+  border-radius: 0.75rem;
+  color: #fff;
+}
+
+.points-hero__label {
+  margin: 0;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  opacity: 0.85;
+}
+
+.points-hero__value {
+  margin: 0;
+  font-size: 2.75rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.points-hero__next {
+  margin: 0;
+  font-size: 0.875rem;
+  text-align: right;
+  opacity: 0.9;
+}
+
+.tier-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(9.5rem, 1fr));
+  gap: 0.75rem;
+}
+
+.tier {
+  padding: 1rem;
+  background: #fff;
+  border: 1px solid #dfe6ee;
+  border-radius: 0.6rem;
+  text-align: center;
+}
+
+.tier--locked {
+  opacity: 0.6;
+}
+
+.tier__points {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #14243a;
+}
+
+.tier__reward {
+  margin: 0.1rem 0 0;
+  font-size: 0.9rem;
+  color: #0d6efd;
+  font-weight: 600;
+}
+
+.tier__rate {
+  margin: 0.1rem 0 0.75rem;
+  font-size: 0.72rem;
+  color: #5d6b80;
+}
+
+.voucher-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.voucher {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #eef2f6;
+}
+
+.voucher:last-child {
+  border-bottom: none;
+}
+
+.voucher__code {
+  margin: 0;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-weight: 600;
+  color: #14243a;
+}
+
+.voucher__meta {
+  margin: 0.1rem 0 0;
+  font-size: 0.8rem;
+  color: #5d6b80;
+}
+
+/* Shared small pieces */
+.loading-block {
+  display: flex;
+  align-items: center;
+  padding: 2rem;
+  color: #5d6b80;
+}
+
+.empty-state {
+  padding: 2rem 1rem;
+  text-align: center;
+}
+
+.empty-state__title {
+  margin: 0;
+  font-weight: 600;
+  color: #14243a;
+}
+
+.empty-state__message {
+  margin: 0.25rem 0 1rem;
+  font-size: 0.875rem;
+  color: #5d6b80;
+}
+
+.field-error {
+  margin: 0 0 0.5rem;
+  font-size: 0.875rem;
+  color: #dc3545;
+}
+
+@media (max-width: 768px) {
+  .portal {
+    grid-template-columns: 1fr;
+  }
+
+  .portal-nav {
+    flex-direction: row;
+    overflow-x: auto;
+    border-right: none;
+    border-bottom: 1px solid #e3e9f0;
+  }
+
+  .portal-nav__link {
+    white-space: nowrap;
+  }
+
+  .portal-nav__points {
+    margin-top: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.4rem 0.75rem;
+  }
+
+  .portal-nav__points-value {
+    font-size: 1rem;
+  }
+
+  .portal-main {
+    padding: 1rem;
+  }
+
+  .page-head {
+    flex-direction: column;
+  }
+}

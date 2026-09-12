@@ -1,0 +1,199 @@
+/* Styling for the login, register and no-access screens.
+   Bootstrap is loaded first in main.jsx, so this only adds what Bootstrap
+   does not cover. */
+
+:root {
+  --auth-bg-start: #e8f4fb;
+  --auth-bg-end: #f6fbfd;
+  --auth-accent: #0d6efd;
+  --auth-ink: #14243a;
+  --auth-muted: #5d6b80;
+}
+
+.auth-shell {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  background: linear-gradient(160deg, var(--auth-bg-start), var(--auth-bg-end));
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 27rem;
+  padding: 2rem;
+  background: #fff;
+  border-radius: 1rem;
+  box-shadow: 0 1.25rem 2.5rem rgba(20, 36, 58, 0.12);
+}
+
+.auth-card__brand {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.auth-card__logo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 0.5rem;
+  background: var(--auth-accent);
+  color: #fff;
+  font-size: 1.1rem;
+}
+
+.auth-card__brand-name {
+  font-weight: 600;
+  color: var(--auth-ink);
+}
+
+.auth-card__title {
+  margin-bottom: 0.25rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--auth-ink);
+}
+
+.auth-card__subtitle {
+  margin-bottom: 1.5rem;
+  font-size: 0.9rem;
+  color: var(--auth-muted);
+}
+
+.auth-card__footer {
+  margin-top: 1.25rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid #e6ebf1;
+  font-size: 0.9rem;
+  text-align: center;
+  color: var(--auth-muted);
+}
+
+.auth-field__label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--auth-ink);
+}
+
+.auth-field__required {
+  color: #dc3545;
+}
+
+/* Demo account picker — removed automatically once the real API is switched on. */
+.auth-demo {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background: #f5f8fb;
+  border: 1px dashed #c8d6e4;
+  border-radius: 0.75rem;
+}
+
+.auth-demo__heading {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--auth-muted);
+}
+
+.auth-demo__tag {
+  padding: 0.1rem 0.45rem;
+  border-radius: 999px;
+  background: #ffe8a3;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: none;
+  letter-spacing: 0;
+  color: #6b4e00;
+}
+
+.auth-demo__list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+}
+
+.auth-demo__button {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  padding: 0.5rem 0.4rem;
+  background: #fff;
+  border: 1px solid #d5e0ec;
+  border-radius: 0.5rem;
+  cursor: pointer;
+}
+
+.auth-demo__button:hover:not(:disabled) {
+  border-color: var(--auth-accent);
+}
+
+.auth-demo__button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.auth-demo__role {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--auth-ink);
+}
+
+.auth-demo__username {
+  font-size: 0.7rem;
+  color: var(--auth-muted);
+}
+
+.auth-demo__hint {
+  margin: 0.75rem 0 0;
+  font-size: 0.75rem;
+  color: var(--auth-muted);
+}
+
+/* Bar shown at the top of the signed-in portals. */
+.signed-in-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.75rem 1.25rem;
+  background: var(--auth-ink);
+  color: #fff;
+}
+
+.signed-in-bar__brand {
+  font-weight: 600;
+}
+
+.signed-in-bar__user {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.875rem;
+}
+
+.signed-in-bar__role {
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.16);
+  font-size: 0.75rem;
+}
+
+@media (max-width: 420px) {
+  .auth-card {
+    padding: 1.5rem;
+  }
+
+  .auth-demo__list {
+    grid-template-columns: 1fr;
+  }
+}
