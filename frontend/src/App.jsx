@@ -7,6 +7,11 @@ import LoginPage from './pages/auth/LoginPage'
 import RegisterPage from './pages/auth/RegisterPage'
 import UnauthorizedPage from './pages/auth/UnauthorizedPage'
 import PortalPlaceholder from './pages/PortalPlaceholder'
+import CustomerLayout from './layouts/CustomerLayout'
+import CustomerDashboard from './pages/customer/CustomerDashboard'
+import BookService from './pages/customer/BookService'
+import MyBookings from './pages/customer/MyBookings'
+import LoyaltyPoints from './pages/customer/LoyaltyPoints'
 import ProtectedRoute from './routes/ProtectedRoute'
 import PublicOnlyRoute from './routes/PublicOnlyRoute'
 import { ACCOUNT_TYPES } from './constants/accountTypes'
@@ -25,18 +30,14 @@ function App() {
 
       <Route path="/unauthorized" element={<UnauthorizedPage />} />
 
-      {/* Customer portal — Khai Tan Sum / Wei Jie's booking and loyalty screens. */}
+      {/* Customer portal — booking and loyalty. */}
       <Route element={<ProtectedRoute allow={[ACCOUNT_TYPES.CUSTOMER]} />}>
-        <Route
-          path="/customer"
-          element={
-            <PortalPlaceholder
-              title="Customer portal"
-              owner="the booking team"
-              upcoming={['Book a service', 'My bookings', 'Loyalty points and redemption']}
-            />
-          }
-        />
+        <Route path="/customer" element={<CustomerLayout />}>
+          <Route index element={<CustomerDashboard />} />
+          <Route path="book" element={<BookService />} />
+          <Route path="bookings" element={<MyBookings />} />
+          <Route path="loyalty" element={<LoyaltyPoints />} />
+        </Route>
       </Route>
 
       {/* Admin portal — Meet's inventory and promotions screens. */}
