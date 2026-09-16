@@ -1,0 +1,196 @@
+/* Global rules: typography, and how every interactive thing responds to being
+ * used.
+ *
+ * Loaded after Bootstrap so these win. The interaction rules are deliberately
+ * global rather than per-component, so a new button added by anyone on the
+ * team is pushable by default and nobody has to remember to style it.
+ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+  color: var(--ink-900);
+  background: var(--surface-sunken);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-tight);
+  letter-spacing: -0.015em;
+  color: var(--ink-900);
+}
+
+p {
+  margin: 0;
+}
+
+/* Numbers that sit in a column — prices, points, counts — need fixed-width
+ * digits, or the columns visibly wobble as values change. */
+.tabular {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum';
+}
+
+/* ====================================================================== *
+ * Interaction states
+ *
+ * Every control gets all four: rest, hover, active, focus-visible.
+ *  - hover     tells a mouse user it can be clicked
+ *  - active    confirms the press — the button physically moves
+ *  - focus-visible is the keyboard equivalent, and :focus-visible rather
+ *    than :focus so mouse users do not get a ring they did not ask for
+ *  - disabled  is visibly dimmed and refuses hover and active, so a dead
+ *    control never pretends to be live
+ * ====================================================================== */
+
+button,
+[role='button'],
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+button:not(:disabled),
+[role='button']:not([aria-disabled='true']),
+a,
+summary {
+  cursor: pointer;
+}
+
+button,
+.btn,
+[role='button'] {
+  transition:
+    background-color var(--transition),
+    border-color var(--transition),
+    color var(--transition),
+    box-shadow var(--transition),
+    transform var(--transition);
+}
+
+/* The press. 1px is enough to read as movement without looking broken. */
+button:not(:disabled):active,
+.btn:not(:disabled):active,
+[role='button']:not([aria-disabled='true']):active {
+  transform: translateY(1px);
+}
+
+/* One focus ring for the whole app, on every focusable thing. */
+button:focus-visible,
+.btn:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[role='button']:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--brand-600);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* Disabled controls do not move, do not highlight, and say so on hover via
+ * their title attribute. */
+button:disabled,
+.btn:disabled,
+.btn.disabled,
+[aria-disabled='true'] {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+/* Bootstrap's own buttons, brought in line with the tokens. */
+.btn {
+  font-weight: var(--weight-medium);
+  border-radius: var(--radius-md);
+}
+
+.btn-primary {
+  --bs-btn-bg: var(--brand-600);
+  --bs-btn-border-color: var(--brand-600);
+  --bs-btn-hover-bg: var(--brand-700);
+  --bs-btn-hover-border-color: var(--brand-700);
+  --bs-btn-active-bg: var(--brand-700);
+  --bs-btn-active-border-color: var(--brand-700);
+  --bs-btn-disabled-bg: var(--brand-600);
+  --bs-btn-disabled-border-color: var(--brand-600);
+}
+
+.btn-primary:not(:disabled):hover {
+  box-shadow: var(--shadow-md);
+}
+
+/* Text inputs */
+.form-control,
+.form-select {
+  border-color: var(--border-strong);
+  border-radius: var(--radius-md);
+  transition:
+    border-color var(--transition),
+    box-shadow var(--transition);
+}
+
+.form-control:hover:not(:disabled):not(:focus),
+.form-select:hover:not(:disabled):not(:focus) {
+  border-color: var(--ink-400);
+}
+
+/* Bootstrap sets `outline: 0` on .form-control:focus and outranks a bare
+ * `input:focus-visible` on specificity, so inputs need their own rule or they
+ * end up as the only controls in the app with no focus ring. One ring style
+ * for everything, strong enough to pass WCAG contrast. */
+.form-control:focus,
+.form-select:focus {
+  border-color: var(--brand-500);
+  box-shadow: none;
+}
+
+.form-control:focus-visible,
+.form-select:focus-visible {
+  outline: 2px solid var(--brand-600);
+  outline-offset: 1px;
+  border-color: var(--brand-500);
+}
+
+/* Links */
+a {
+  color: var(--brand-600);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+  transition: color var(--transition);
+}
+
+a:hover {
+  color: var(--brand-700);
+}
+
+/* Anyone who has asked their system to reduce motion gets the colour changes
+ * but none of the movement. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+
+  button:active,
+  .btn:active,
+  [role='button']:active {
+    transform: none;
+  }
+}
