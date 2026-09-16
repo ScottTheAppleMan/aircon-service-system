@@ -63,7 +63,9 @@ export default function CustomerDashboard() {
   return (
     <>
       <header className="page-head">
-        <h1 className="page-head__title">Hello, {customer?.customer_name || user.username}</h1>
+        <h1 className="page-head__title">
+          Hello, {customer?.customer_name || user.name || user.username}
+        </h1>
         <p className="page-head__subtitle">Here is where your servicing stands.</p>
       </header>
 

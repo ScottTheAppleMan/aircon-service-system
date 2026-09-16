@@ -17,7 +17,11 @@ export default function SignedInBar() {
       </Link>
 
       <div className="signed-in-bar__user">
-        <span className="signed-in-bar__name">{user.username}</span>
+        {/* The person's name reads better than their login handle, and stops
+            a username like "customer" sitting next to a "Customer" role pill
+            and looking like the same thing twice. Falls back to the username
+            until the backend returns a name. */}
+        <span className="signed-in-bar__name">{user.name || user.username}</span>
         <span className="signed-in-bar__role">{user.accountType}</span>
         <button type="button" className="btn btn-sm btn-outline-light" onClick={logout}>
           Sign out

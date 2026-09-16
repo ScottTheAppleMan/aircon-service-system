@@ -55,6 +55,12 @@ function findUser(username) {
   )
 }
 
+// The name lives on whichever subtype table the account belongs to:
+// newCustomer.customer_name, admin.admin_name or technician.technician_name.
+function displayNameFor(user) {
+  return user.customer_name || user.admin_name || user.technician_name || null
+}
+
 // Mirrors jwt.sign(...) closely enough to store and send, but it is not signed
 // and carries no authority. Nothing may trust this value.
 function fakeToken(user) {
@@ -85,6 +91,10 @@ export async function login({ username, password }) {
       user_ID: user.user_ID,
       username: user.username,
       accountType: user.accountType,
+      // The person's name, for greeting them in the UI. The real endpoint
+      // does not return this yet — see the note in CUSTOMER_PORTAL.md. Every
+      // screen falls back to the username while it is missing.
+      name: displayNameFor(user),
     },
   }
 }
