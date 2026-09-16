@@ -146,7 +146,7 @@ export default function MyBookings() {
                   <th scope="col">Service</th>
                   <th scope="col">When</th>
                   <th scope="col">Technician</th>
-                  <th scope="col">Price</th>
+                  <th scope="col" className="num">Price</th>
                   <th scope="col">Status</th>
                   <th scope="col" className="text-end">Action</th>
                 </tr>
@@ -168,7 +168,7 @@ export default function MyBookings() {
                         <span className="text-muted small">Not assigned</span>
                       )}
                     </td>
-                    <td>{formatMoney(booking.price)}</td>
+                    <td className="num">{formatMoney(booking.price)}</td>
                     <td>
                       <BookingStatusBadge status={booking.status} />
                     </td>
@@ -183,7 +183,12 @@ export default function MyBookings() {
                           {cancellingId === booking.booking_ID ? 'Cancelling…' : 'Cancel'}
                         </button>
                       ) : (
-                        <span className="text-muted small">—</span>
+                        <span
+                          className="text-muted small"
+                          title={`A booking that is ${booking.status.toLowerCase()} cannot be cancelled here`}
+                        >
+                          —
+                        </span>
                       )}
                     </td>
                   </tr>

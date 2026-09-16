@@ -2,6 +2,7 @@
 // Kept separate from any layout so the role pages can drop it in without
 // clashing with the layouts each teammate is building.
 
+import { Link } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 
 export default function SignedInBar() {
@@ -11,9 +12,9 @@ export default function SignedInBar() {
 
   return (
     <header className="signed-in-bar">
-      <div className="signed-in-bar__brand">
+      <Link to="/" className="signed-in-bar__brand">
         <span aria-hidden="true">❄</span> AirCon Care
-      </div>
+      </Link>
 
       <div className="signed-in-bar__user">
         <span className="signed-in-bar__name">{user.username}</span>

@@ -132,9 +132,15 @@ export default function LoyaltyPoints() {
 
                 <button
                   type="button"
-                  className={`btn btn-sm w-100 ${affordable ? 'btn-primary' : 'btn-outline-secondary'}`}
+                  className={`btn btn-sm w-100 tier__action ${affordable ? 'btn-primary' : 'btn-outline-secondary'}`}
                   onClick={() => handleRedeem(tier)}
                   disabled={!affordable || redeemingTierId !== null}
+                  // A disabled control that does not say why reads as broken.
+                  title={
+                    affordable
+                      ? `Exchange ${tier.points} points for ${tier.label}`
+                      : `You need ${tier.points - balance} more points for this reward`
+                  }
                 >
                   {redeemingTierId === tier.id
                     ? 'Redeeming…'
@@ -185,8 +191,8 @@ export default function LoyaltyPoints() {
                 <tr>
                   <th scope="col">Service</th>
                   <th scope="col">Date</th>
-                  <th scope="col">Spent</th>
-                  <th scope="col" className="text-end">Points</th>
+                  <th scope="col" className="num">Spent</th>
+                  <th scope="col" className="num">Points</th>
                 </tr>
               </thead>
               <tbody>
@@ -194,8 +200,8 @@ export default function LoyaltyPoints() {
                   <tr key={entry.booking_ID}>
                     <td>{entry.service_name}</td>
                     <td>{formatBookingDate(entry.date)}</td>
-                    <td>{formatMoney(entry.amount)}</td>
-                    <td className="text-end text-success fw-semibold">+{entry.points}</td>
+                    <td className="num">{formatMoney(entry.amount)}</td>
+                    <td className="num text-success fw-semibold">+{entry.points}</td>
                   </tr>
                 ))}
               </tbody>

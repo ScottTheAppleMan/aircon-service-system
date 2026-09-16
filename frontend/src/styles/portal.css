@@ -1,95 +1,166 @@
-/* Shared styling for the signed-in portals. Bootstrap loads first; this only
-   adds what it does not cover. */
+/* Signed-in portals: top bar, side navigation, and the shared page furniture.
+ * All spacing comes from the token scale so columns and cards line up across
+ * every page. */
+
+/* ---- Top bar --------------------------------------------------------- */
+
+.signed-in-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  height: var(--topbar-height);
+  padding: 0 var(--space-5);
+  background: var(--ink-900);
+  color: #fff;
+}
+
+.signed-in-bar__brand {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-weight: var(--weight-semibold);
+  color: #fff;
+  text-decoration: none;
+}
+
+.signed-in-bar__brand:hover {
+  color: var(--brand-200);
+}
+
+.signed-in-bar__user {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: var(--text-sm);
+}
+
+.signed-in-bar__role {
+  padding: 0.1rem var(--space-2);
+  border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, 0.16);
+  font-size: var(--text-xs);
+}
+
+/* ---- Shell ----------------------------------------------------------- */
 
 .portal {
   display: grid;
-  grid-template-columns: 13.5rem 1fr;
-  min-height: calc(100vh - 3.25rem);
-  background: #f4f7fa;
+  grid-template-columns: var(--sidebar-width) 1fr;
+  min-height: calc(100vh - var(--topbar-height));
+  background: var(--surface-sunken);
 }
 
 .portal-nav {
   display: flex;
   flex-direction: column;
-  gap: 0.15rem;
-  padding: 1rem 0.75rem;
-  background: #fff;
-  border-right: 1px solid #e3e9f0;
+  gap: var(--space-1);
+  padding: var(--space-4) var(--space-3);
+  background: var(--surface);
+  border-right: 1px solid var(--border);
 }
 
 .portal-nav__link {
-  padding: 0.55rem 0.75rem;
-  border-radius: 0.5rem;
-  color: #445067;
-  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  color: var(--ink-700);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
   text-decoration: none;
+  transition:
+    background-color var(--transition),
+    color var(--transition);
 }
 
 .portal-nav__link:hover {
-  background: #f1f5f9;
-  color: #14243a;
+  background: var(--surface-raised);
+  color: var(--ink-900);
 }
 
 .portal-nav__link--active {
-  background: #e7f0ff;
-  color: #0d6efd;
-  font-weight: 600;
+  background: var(--brand-50);
+  color: var(--brand-700);
 }
 
 .portal-nav__points {
   margin-top: auto;
-  padding: 0.75rem;
-  background: #f4f8ff;
-  border: 1px solid #d9e6ff;
-  border-radius: 0.6rem;
+  padding: var(--space-4);
+  background: var(--brand-50);
+  border: 1px solid var(--brand-100);
+  border-radius: var(--radius-lg);
   text-align: center;
 }
 
 .portal-nav__points-value {
   display: block;
-  font-size: 1.4rem;
-  font-weight: 700;
-  color: #0d6efd;
-  line-height: 1.1;
+  font-size: var(--text-2xl);
+  font-weight: var(--weight-bold);
+  line-height: var(--leading-tight);
+  color: var(--brand-700);
+  font-variant-numeric: tabular-nums;
 }
 
 .portal-nav__points-label {
-  font-size: 0.75rem;
-  color: #5d6b80;
+  font-size: var(--text-xs);
+  color: var(--ink-500);
 }
 
+/* One content column, centred, with the same gutter on every page.
+ *
+ * min-width: 0 matters: a grid item defaults to min-width: auto, which means
+ * it refuses to shrink below its widest child. Without it a wide table pushes
+ * the whole page sideways on a phone instead of scrolling inside its own
+ * container. */
 .portal-main {
-  padding: 1.5rem;
-  max-width: 60rem;
+  width: 100%;
+  min-width: 0;
+  max-width: var(--content-max);
+  margin: 0 auto;
+  padding: var(--space-6) var(--space-5) var(--space-8);
 }
+
+/* Same reason, one level down: the panel wrapping a table must be allowed to
+ * be narrower than the table it holds. */
+.panel,
+.panel--flush,
+.table-responsive {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.table-responsive {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ---- Page furniture -------------------------------------------------- */
 
 .page-head {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  gap: 1rem;
-  margin-bottom: 1.25rem;
+  gap: var(--space-4);
+  margin-bottom: var(--space-6);
 }
 
 .page-head__title {
-  margin: 0;
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: #14243a;
+  font-size: var(--text-2xl);
 }
 
 .page-head__subtitle {
-  margin: 0.15rem 0 0;
-  font-size: 0.9rem;
-  color: #5d6b80;
+  margin-top: var(--space-1);
+  font-size: var(--text-sm);
+  color: var(--ink-500);
 }
 
 .panel {
-  padding: 1.25rem;
-  margin-bottom: 1.25rem;
-  background: #fff;
-  border: 1px solid #e3e9f0;
-  border-radius: 0.75rem;
+  padding: var(--space-5);
+  margin-bottom: var(--space-5);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
 }
 
 .panel--flush {
@@ -101,308 +172,384 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1rem;
-  margin-bottom: 1rem;
+  gap: var(--space-4);
+  margin-bottom: var(--space-4);
 }
 
 .panel__title {
-  margin: 0 0 0.75rem;
-  font-size: 1rem;
-  font-weight: 600;
-  color: #14243a;
+  margin-bottom: var(--space-3);
+  font-size: var(--text-base);
 }
 
 .panel__head .panel__title {
   margin-bottom: 0;
 }
 
-/* Dashboard stat tiles */
+/* ---- Stat tiles ------------------------------------------------------ */
+
 .stat-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
-  gap: 0.75rem;
-  margin-bottom: 1.25rem;
+  grid-template-columns: repeat(auto-fit, minmax(min(10rem, 100%), 1fr));
+  gap: var(--space-3);
+  margin-bottom: var(--space-5);
 }
 
 .stat-card {
-  padding: 1rem;
-  background: #fff;
-  border: 1px solid #e3e9f0;
-  border-radius: 0.75rem;
+  padding: var(--space-4);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
 }
 
 .stat-card__label {
-  margin: 0;
-  font-size: 0.75rem;
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
   text-transform: uppercase;
-  letter-spacing: 0.04em;
-  color: #5d6b80;
+  letter-spacing: 0.05em;
+  color: var(--ink-500);
 }
 
 .stat-card__value {
-  margin: 0.25rem 0 0;
-  font-size: 1.75rem;
-  font-weight: 700;
-  color: #14243a;
-  line-height: 1.1;
+  margin-top: var(--space-1);
+  font-size: var(--text-2xl);
+  font-weight: var(--weight-bold);
+  line-height: var(--leading-tight);
+  color: var(--ink-900);
+  font-variant-numeric: tabular-nums;
 }
 
 .stat-card__hint {
-  margin: 0.25rem 0 0;
-  font-size: 0.8rem;
+  margin-top: var(--space-1);
+  font-size: var(--text-sm);
 }
+
+/* ---- Next visit ------------------------------------------------------ */
 
 .next-visit {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  gap: 1rem;
+  gap: var(--space-4);
 }
 
 .next-visit__service {
-  margin: 0;
-  font-size: 1.05rem;
-  font-weight: 600;
-  color: #14243a;
+  font-size: var(--text-lg);
+  font-weight: var(--weight-semibold);
 }
 
 .next-visit__when,
 .next-visit__where,
 .next-visit__tech {
-  margin: 0.2rem 0 0;
-  font-size: 0.875rem;
-  color: #5d6b80;
+  margin-top: var(--space-1);
+  font-size: var(--text-sm);
+  color: var(--ink-500);
 }
 
-/* Service picker on the booking form */
+/* ---- Service picker -------------------------------------------------- */
+
 .service-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
-  gap: 0.75rem;
+  grid-template-columns: repeat(auto-fit, minmax(min(13rem, 100%), 1fr));
+  gap: var(--space-3);
 }
 
 .service-card {
   display: flex;
   flex-direction: column;
-  gap: 0.2rem;
-  padding: 0.9rem;
-  background: #fff;
-  border: 1px solid #dfe6ee;
-  border-radius: 0.6rem;
+  gap: var(--space-1);
+  padding: var(--space-4);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
   text-align: left;
-  cursor: pointer;
 }
 
-.service-card:hover:not(:disabled) {
-  border-color: #0d6efd;
+.service-card:not(:disabled):hover {
+  border-color: var(--brand-400);
+  background: var(--brand-50);
 }
 
-.service-card--selected {
-  border-color: #0d6efd;
-  box-shadow: 0 0 0 2px rgba(13, 110, 253, 0.15);
-  background: #f6faff;
+.service-card--selected,
+.service-card--selected:not(:disabled):hover {
+  border-color: var(--brand-600);
+  background: var(--brand-50);
+  box-shadow: 0 0 0 2px var(--brand-200);
 }
 
 .service-card__name {
-  font-weight: 600;
-  color: #14243a;
+  font-weight: var(--weight-semibold);
+  color: var(--ink-900);
 }
 
 .service-card__price {
-  font-size: 0.95rem;
-  font-weight: 600;
-  color: #0d6efd;
+  font-size: var(--text-base);
+  font-weight: var(--weight-semibold);
+  color: var(--brand-600);
+  font-variant-numeric: tabular-nums;
 }
 
 .service-card__description {
-  font-size: 0.8rem;
-  color: #5d6b80;
+  font-size: var(--text-sm);
+  line-height: var(--leading-relaxed);
+  color: var(--ink-500);
 }
 
-/* Time slots */
+/* ---- Time slots ------------------------------------------------------ */
+
 .slot-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(6.5rem, 1fr));
-  gap: 0.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(min(6.5rem, 100%), 1fr));
+  gap: var(--space-2);
 }
 
 .slot {
-  padding: 0.5rem;
-  background: #fff;
-  border: 1px solid #dfe6ee;
-  border-radius: 0.5rem;
-  font-size: 0.875rem;
-  cursor: pointer;
+  padding: var(--space-2) var(--space-3);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
+  font-variant-numeric: tabular-nums;
 }
 
-.slot:hover:not(:disabled) {
-  border-color: #0d6efd;
+.slot:not(:disabled):hover {
+  border-color: var(--brand-400);
+  background: var(--brand-50);
 }
 
-.slot--selected {
-  background: #0d6efd;
-  border-color: #0d6efd;
+.slot--selected,
+.slot--selected:not(:disabled):hover {
+  background: var(--brand-600);
+  border-color: var(--brand-600);
   color: #fff;
-  font-weight: 600;
+  font-weight: var(--weight-semibold);
 }
+
+/* ---- Booking summary ------------------------------------------------- */
 
 .booking-summary {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1rem;
-  padding: 1.25rem;
-  background: #fff;
-  border: 1px solid #e3e9f0;
-  border-radius: 0.75rem;
+  gap: var(--space-4);
+  padding: var(--space-5);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
 }
 
 .booking-summary__label {
-  margin: 0;
-  font-size: 0.75rem;
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
   text-transform: uppercase;
-  letter-spacing: 0.04em;
-  color: #5d6b80;
+  letter-spacing: 0.05em;
+  color: var(--ink-500);
 }
 
 .booking-summary__value {
-  margin: 0.1rem 0 0;
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #14243a;
+  margin-top: var(--space-1);
+  font-size: var(--text-2xl);
+  font-weight: var(--weight-bold);
+  color: var(--ink-900);
+  font-variant-numeric: tabular-nums;
 }
 
 .booking-summary__note {
-  margin: 0.1rem 0 0;
-  font-size: 0.78rem;
-  color: #5d6b80;
+  margin-top: var(--space-1);
+  font-size: var(--text-xs);
+  color: var(--ink-500);
 }
 
-/* Filter tabs on My bookings */
+/* ---- Filter tabs ----------------------------------------------------- */
+/* One row, evenly spaced, each tab the same height whatever its label. */
+
 .filter-tabs {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.4rem;
-  margin-bottom: 1rem;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
 }
 
 .filter-tab {
   display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
-  padding: 0.4rem 0.8rem;
-  background: #fff;
-  border: 1px solid #dfe6ee;
-  border-radius: 999px;
-  font-size: 0.85rem;
-  color: #445067;
-  cursor: pointer;
+  gap: var(--space-2);
+  height: 2.25rem;
+  padding: 0 var(--space-4);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--ink-700);
+  white-space: nowrap;
 }
 
-.filter-tab--active {
-  background: #0d6efd;
-  border-color: #0d6efd;
+.filter-tab:not(:disabled):hover {
+  border-color: var(--brand-400);
+  color: var(--brand-700);
+}
+
+.filter-tab--active,
+.filter-tab--active:not(:disabled):hover {
+  background: var(--brand-600);
+  border-color: var(--brand-600);
   color: #fff;
-  font-weight: 600;
 }
 
 .filter-tab__count {
-  padding: 0 0.4rem;
-  border-radius: 999px;
-  background: rgba(0, 0, 0, 0.08);
-  font-size: 0.75rem;
+  min-width: 1.5rem;
+  padding: 0 var(--space-1);
+  border-radius: var(--radius-pill);
+  background: var(--surface-sunken);
+  font-size: var(--text-xs);
+  font-variant-numeric: tabular-nums;
+  text-align: center;
 }
 
 .filter-tab--active .filter-tab__count {
-  background: rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.22);
 }
 
-/* Loyalty */
+/* ---- Tables ---------------------------------------------------------- */
+
+.table {
+  margin-bottom: 0;
+  font-size: var(--text-sm);
+}
+
+.table thead th {
+  padding: var(--space-3) var(--space-4);
+  background: var(--surface-raised);
+  border-bottom: 1px solid var(--border);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--ink-500);
+  white-space: nowrap;
+}
+
+.table tbody td {
+  padding: var(--space-4);
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+
+.table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.table tbody tr {
+  transition: background-color var(--transition);
+}
+
+.table tbody tr:hover {
+  background: var(--surface-raised);
+}
+
+/* Money and counts right-align so the digits stack. */
+.table .num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+/* ---- Loyalty --------------------------------------------------------- */
+
 .points-hero {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1rem;
-  padding: 1.5rem;
-  margin-bottom: 1.25rem;
-  background: linear-gradient(135deg, #0d6efd, #4f9bff);
-  border-radius: 0.75rem;
+  gap: var(--space-4);
+  padding: var(--space-6);
+  margin-bottom: var(--space-5);
+  background: linear-gradient(135deg, var(--brand-700), var(--brand-500));
+  border-radius: var(--radius-xl);
   color: #fff;
 }
 
 .points-hero__label {
-  margin: 0;
-  font-size: 0.8rem;
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.06em;
   opacity: 0.85;
 }
 
 .points-hero__value {
-  margin: 0;
-  font-size: 2.75rem;
-  font-weight: 700;
+  font-size: var(--text-4xl);
+  font-weight: var(--weight-bold);
   line-height: 1;
+  font-variant-numeric: tabular-nums;
 }
 
 .points-hero__next {
-  margin: 0;
-  font-size: 0.875rem;
+  font-size: var(--text-sm);
   text-align: right;
   opacity: 0.9;
 }
 
 .tier-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(9.5rem, 1fr));
-  gap: 0.75rem;
+  grid-template-columns: repeat(auto-fit, minmax(min(10rem, 100%), 1fr));
+  gap: var(--space-3);
 }
 
+/* Fixed row areas so every tier card is the same height and the buttons
+   across the row line up, whatever the label says. */
 .tier {
-  padding: 1rem;
-  background: #fff;
-  border: 1px solid #dfe6ee;
-  border-radius: 0.6rem;
+  display: grid;
+  grid-template-rows: auto auto auto 1fr;
+  gap: var(--space-1);
+  padding: var(--space-4);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
   text-align: center;
 }
 
 .tier--locked {
-  opacity: 0.6;
+  background: var(--surface-raised);
 }
 
 .tier__points {
-  margin: 0;
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: #14243a;
+  font-size: var(--text-xl);
+  font-weight: var(--weight-bold);
+  color: var(--ink-900);
+  font-variant-numeric: tabular-nums;
 }
 
 .tier__reward {
-  margin: 0.1rem 0 0;
-  font-size: 0.9rem;
-  color: #0d6efd;
-  font-weight: 600;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  color: var(--brand-600);
+  font-variant-numeric: tabular-nums;
 }
 
 .tier__rate {
-  margin: 0.1rem 0 0.75rem;
-  font-size: 0.72rem;
-  color: #5d6b80;
+  margin-bottom: var(--space-3);
+  font-size: var(--text-xs);
+  color: var(--ink-500);
+  font-variant-numeric: tabular-nums;
+}
+
+.tier__action {
+  align-self: end;
 }
 
 .voucher-list {
-  list-style: none;
   margin: 0;
   padding: 0;
+  list-style: none;
 }
 
 .voucher {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1rem;
-  padding: 0.75rem 0;
-  border-bottom: 1px solid #eef2f6;
+  gap: var(--space-4);
+  padding: var(--space-3) 0;
+  border-bottom: 1px solid var(--border);
 }
 
 .voucher:last-child {
@@ -410,59 +557,71 @@
 }
 
 .voucher__code {
-  margin: 0;
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-weight: 600;
-  color: #14243a;
+  font-family: var(--font-mono);
+  font-weight: var(--weight-semibold);
+  letter-spacing: 0.02em;
+  color: var(--ink-900);
 }
 
 .voucher__meta {
-  margin: 0.1rem 0 0;
-  font-size: 0.8rem;
-  color: #5d6b80;
+  margin-top: var(--space-1);
+  font-size: var(--text-xs);
+  color: var(--ink-500);
 }
 
-/* Shared small pieces */
+/* ---- Small shared pieces --------------------------------------------- */
+
 .loading-block {
   display: flex;
   align-items: center;
-  padding: 2rem;
-  color: #5d6b80;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: var(--space-8);
+  color: var(--ink-500);
 }
 
 .empty-state {
-  padding: 2rem 1rem;
+  padding: var(--space-8) var(--space-4);
   text-align: center;
 }
 
 .empty-state__title {
-  margin: 0;
-  font-weight: 600;
-  color: #14243a;
+  font-weight: var(--weight-semibold);
+  color: var(--ink-900);
 }
 
 .empty-state__message {
-  margin: 0.25rem 0 1rem;
-  font-size: 0.875rem;
-  color: #5d6b80;
+  margin: var(--space-2) 0 var(--space-5);
+  font-size: var(--text-sm);
+  color: var(--ink-500);
 }
 
 .field-error {
-  margin: 0 0 0.5rem;
-  font-size: 0.875rem;
-  color: #dc3545;
+  margin-bottom: var(--space-2);
+  font-size: var(--text-sm);
+  color: var(--danger-500);
 }
 
-@media (max-width: 768px) {
+.badge {
+  font-weight: var(--weight-medium);
+  border-radius: var(--radius-pill);
+}
+
+/* ---- Narrow screens -------------------------------------------------- */
+
+@media (max-width: 860px) {
   .portal {
     grid-template-columns: 1fr;
   }
 
   .portal-nav {
     flex-direction: row;
+    align-items: center;
+    gap: var(--space-2);
     overflow-x: auto;
+    padding: var(--space-3) var(--space-4);
     border-right: none;
-    border-bottom: 1px solid #e3e9f0;
+    border-bottom: 1px solid var(--border);
   }
 
   .portal-nav__link {
@@ -470,22 +629,34 @@
   }
 
   .portal-nav__points {
-    margin-top: 0;
     display: flex;
-    align-items: center;
-    gap: 0.35rem;
-    padding: 0.4rem 0.75rem;
+    align-items: baseline;
+    gap: var(--space-2);
+    margin-top: 0;
+    margin-left: auto;
+    padding: var(--space-2) var(--space-3);
   }
 
   .portal-nav__points-value {
-    font-size: 1rem;
+    font-size: var(--text-base);
   }
 
   .portal-main {
-    padding: 1rem;
+    padding: var(--space-5) var(--space-4) var(--space-7);
   }
 
   .page-head {
     flex-direction: column;
+    align-items: stretch;
+  }
+
+  .points-hero {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-3);
+  }
+
+  .points-hero__next {
+    text-align: left;
   }
 }

@@ -3,6 +3,7 @@
 // admin, technician or customer portal based on accountType.
 
 import { Navigate, Route, Routes } from 'react-router-dom'
+import HomePage from './pages/home/HomePage'
 import LoginPage from './pages/auth/LoginPage'
 import RegisterPage from './pages/auth/RegisterPage'
 import UnauthorizedPage from './pages/auth/UnauthorizedPage'
@@ -19,8 +20,10 @@ import { ACCOUNT_TYPES } from './constants/accountTypes'
 function App() {
   return (
     <Routes>
-      {/* Everyone starts at the login page. */}
-      <Route path="/" element={<Navigate to="/login" replace />} />
+      {/* Public homepage. Open to everyone, signed in or not — a returning
+          customer gets a link straight to their dashboard instead of a
+          second login prompt. */}
+      <Route path="/" element={<HomePage />} />
 
       {/* Hidden once signed in — PublicOnlyRoute sends you to your portal. */}
       <Route element={<PublicOnlyRoute />}>
